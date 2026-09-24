@@ -23,7 +23,7 @@ export default function Navbar() {
         
         <div className="flex items-center gap-2 p-1.5">
           <Link
-            href="/workouts"
+            href="/"
             className="px-4 py-1.5 rounded-full bg-[#b6fd00] text-black font-medium text-sm transition"
           >
             Workouts

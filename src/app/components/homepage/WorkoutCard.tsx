@@ -1,3 +1,4 @@
+import Link from "next/link";
 import workoutsData from './WorkoutCard.json';
 
 export default function WorkoutSection() {
@@ -15,7 +16,8 @@ export default function WorkoutSection() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {workoutsData.map((workout) => (
-            <div
+            <Link
+              href={`/workout/${workout.id}`}
               key={workout.id}
               className="bg-[#18181b] border border-zinc-800 rounded-2xl overflow-hidden flex flex-col justify-between transition hover:border-zinc-700"
             >
@@ -72,12 +74,10 @@ export default function WorkoutSection() {
                     <span>{workout.rating}</span>
                   </div>
                 </div>
-
               </div>
-            </div>
+            </Link>
           ))}
         </div>
-
       </div>
     </section>
   );

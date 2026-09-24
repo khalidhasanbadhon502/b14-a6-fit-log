@@ -1,10 +1,11 @@
-import Image from "next/image";
+import Banner from './components/homepage/Banner';
+import WorkoutCard from './components/homepage/WorkoutCard';
 
 export default function Home() {
   return (
-   
     <div>
-            home page
-           </div>
+      <Banner />
+      <WorkoutCard />
+    </div>
   );
 }
