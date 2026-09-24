@@ -53,19 +53,19 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-6 text-sm">
-          <div className="flex items-center gap-2">
+          <Link href="/my-plan?tab=plan" className="flex items-center gap-2 hover:opacity-80 transition">
             <span className="text-zinc-400">Plan</span>
             <span className="w-6 h-6 rounded-full bg-[#b6fd00] text-black font-bold flex items-center justify-center text-xs">
               {plan.length}
             </span>
-          </div>
+          </Link>
 
-          <div className="flex items-center gap-2">
+          <Link href="/my-plan?tab=saved" className="flex items-center gap-2 hover:opacity-80 transition">
             <span className="text-zinc-400">Saved</span>
             <span className="w-6 h-6 rounded-full border border-zinc-700 bg-zinc-900 text-zinc-300 font-bold flex items-center justify-center text-xs">
               {saved.length}
             </span>
-          </div>
+          </Link>
         </div>
 
       </div>

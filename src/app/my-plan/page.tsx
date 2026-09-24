@@ -2,11 +2,15 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { usePlan } from "../context/PlanContext";
 
 export default function MyPlanPage() {
   const { plan, saved, removeFromPlan, removeFromSaved } = usePlan();
-  const [activeTab, setActiveTab] = useState<"plan" | "saved">("plan");
+  const searchParams = useSearchParams();
+  const initialTab = searchParams.get("tab") === "saved" ? "saved" : "plan";
+
+  const [activeTab, setActiveTab] = useState<"plan" | "saved">(initialTab);
   const [sortBy, setSortBy] = useState("Duration");
   const [doneIds, setDoneIds] = useState<number[]>([]);
 
