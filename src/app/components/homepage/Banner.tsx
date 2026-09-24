@@ -20,9 +20,12 @@ export default function Banner() {
           </p>
 
           <Link
-            href="/workouts"
-            className="inline-block bg-[#b6fd00] text-black font-bold px-7 py-3.5 rounded-xl text-sm transition hover:opacity-90"
+            href="#library"
+            className="inline-flex items-center gap-2 bg-[#b6fd00] text-black font-bold px-7 py-3.5 rounded-xl text-sm transition hover:opacity-90"
           >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+            </svg>
             BROWSE WORKOUTS
           </Link>
         </div>
