@@ -4,9 +4,11 @@ import { useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { usePlan } from "../context/PlanContext";
+import { useToast } from "../context/ToastContext";
 
 export default function MyPlanPage() {
   const { plan, saved, removeFromPlan, removeFromSaved } = usePlan();
+  const { showToast } = useToast();
   const searchParams = useSearchParams();
   const initialTab = searchParams.get("tab") === "saved" ? "saved" : "plan";
 
@@ -29,6 +31,16 @@ export default function MyPlanPage() {
     setDoneIds((prev) =>
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
     );
+  };
+
+  const handleRemove = (id: number) => {
+    if (activeTab === "plan") {
+      removeFromPlan(id);
+      showToast("Removed from Today's Plan");
+    } else {
+      removeFromSaved(id);
+      showToast("Removed from saved");
+    }
   };
 
   return (
@@ -171,11 +183,7 @@ export default function MyPlanPage() {
                     )}
 
                     <button
-                      onClick={() =>
-                        activeTab === "plan"
-                          ? removeFromPlan(workout.id)
-                          : removeFromSaved(workout.id)
-                      }
+                      onClick={() => handleRemove(workout.id)}
                       className="text-zinc-500 hover:text-red-400 text-lg leading-none px-1"
                     >
                       ×
