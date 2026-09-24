@@ -22,17 +22,17 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
 
         <Link href="/" className="flex items-center gap-3">
-          <div className="relative w-8 h-8">
+          <div className="relative w-10 h-10">
             <Image
               src="/logo.png"
               alt="Fitlog Logo"
               fill
-              sizes="32px"
+              sizes="40px"
               className="object-contain"
               priority
             />
           </div>
-          <span className="font-extrabold tracking-wider text-lg">FITLOG</span>
+          <span className="font-black tracking-widest text-xl uppercase">FITLOG</span>
         </Link>
 
         <div className="hidden md:flex items-center gap-2 p-1.5">
