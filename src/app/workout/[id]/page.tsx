@@ -33,7 +33,16 @@ export default function WorkoutDetails() {
   const isPlanFull = plan.length >= 5;
 
   const handleAddToPlan = () => {
-    if (isPlanFull || !workout) return;
+    if (!workout) return;
+
+    const alreadyInPlan = plan.some((w) => w.id === workout.id);
+    if (alreadyInPlan) {
+      showToast("Already in your plan");
+      return;
+    }
+
+    if (isPlanFull) return;
+
     addToPlan(workout);
     showToast("Added to today's plan");
   };
