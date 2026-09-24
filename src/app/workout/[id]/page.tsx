@@ -1,3 +1,7 @@
+"use client";
+
+import { useParams } from "next/navigation";
+import { usePlan } from "../../context/PlanContext";
 import workoutsData from '../../components/homepage/WorkoutCard.json';
 
 interface Workout {
@@ -16,8 +20,11 @@ interface Workout {
   instructions: string[];
 }
 
-export default async function WorkoutDetails({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
+export default function WorkoutDetails() {
+  const params = useParams();
+  const id = params.id as string;
+  const { addToPlan, addToSaved } = usePlan();
+
   const workout: Workout | undefined = workoutsData.find((item) => item.id.toString() === id);
 
   if (!workout) {
@@ -95,14 +102,20 @@ export default async function WorkoutDetails({ params }: { params: Promise<{ id:
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3">
-              <button className="flex-1 bg-[#b6fd00] text-black font-bold text-[12px] py-3 px-6 rounded-xl hover:opacity-90 transition flex items-center justify-center gap-2">
+              <button
+                onClick={() => addToPlan(workout)}
+                className="flex-1 bg-[#b6fd00] text-black font-bold text-[12px] py-3 px-6 rounded-xl hover:opacity-90 transition flex items-center justify-center gap-2"
+              >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
                   <rect x="3" y="4" width="18" height="18" rx="2" />
                   <path strokeLinecap="round" d="M16 2v4M8 2v4M3 10h18" />
                 </svg>
                 Add to today's plan
               </button>
-              <button className="flex-1 bg-[#18181b] border border-zinc-800 text-white font-bold text-[12px] py-3 px-6 rounded-xl hover:border-zinc-700 transition flex items-center justify-center gap-2">
+              <button
+                onClick={() => addToSaved(workout)}
+                className="flex-1 bg-[#18181b] border border-zinc-800 text-white font-bold text-[12px] py-3 px-6 rounded-xl hover:border-zinc-700 transition flex items-center justify-center gap-2"
+              >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2v16z" />
                 </svg>
