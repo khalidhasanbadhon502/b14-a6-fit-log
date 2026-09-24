@@ -21,6 +21,7 @@ interface Workout {
 interface PlanContextType {
   plan: Workout[];
   saved: Workout[];
+  loaded: boolean;
   addToPlan: (workout: Workout) => void;
   addToSaved: (workout: Workout) => void;
   removeFromPlan: (id: number) => void;
@@ -74,7 +75,9 @@ export function PlanProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <PlanContext.Provider value={{ plan, saved, addToPlan, addToSaved, removeFromPlan, removeFromSaved }}>
+    <PlanContext.Provider
+      value={{ plan, saved, loaded, addToPlan, addToSaved, removeFromPlan, removeFromSaved }}
+    >
       {children}
     </PlanContext.Provider>
   );

@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { usePlan } from "../context/PlanContext";
 import { useToast } from "../context/ToastContext";
 
-export default function MyPlanPage() {
-  const { plan, saved, removeFromPlan, removeFromSaved } = usePlan();
+function MyPlanContent() {
+  const { plan, saved, loaded, removeFromPlan, removeFromSaved } = usePlan();
   const { showToast } = useToast();
   const searchParams = useSearchParams();
   const initialTab = searchParams.get("tab") === "saved" ? "saved" : "plan";
@@ -42,6 +42,15 @@ export default function MyPlanPage() {
       showToast("Removed from saved");
     }
   };
+
+  if (!loaded) {
+    return (
+      <div className="min-h-screen bg-[#111111] flex flex-col items-center justify-center gap-4">
+        <div className="w-10 h-10 border-4 border-zinc-700 border-t-[#b6fd00] rounded-full animate-spin" />
+        <p className="text-zinc-400 text-sm">Loading workouts…</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#111111] text-white p-4 sm:p-6 md:p-12">
@@ -199,5 +208,20 @@ export default function MyPlanPage() {
 
       </div>
     </div>
+  );
+}
+
+export default function MyPlanPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-[#111111] flex flex-col items-center justify-center gap-4">
+          <div className="w-10 h-10 border-4 border-zinc-700 border-t-[#b6fd00] rounded-full animate-spin" />
+          <p className="text-zinc-400 text-sm">Loading workouts…</p>
+        </div>
+      }
+    >
+      <MyPlanContent />
+    </Suspense>
   );
 }

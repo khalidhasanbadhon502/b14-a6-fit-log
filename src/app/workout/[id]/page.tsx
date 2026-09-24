@@ -1,47 +1,61 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { usePlan } from "../../context/PlanContext";
 import { useToast } from "../../context/ToastContext";
-import workoutsData from '../../components/homepage/WorkoutCard.json';
-
-interface Workout {
-  id: number;
-  name: string;
-  image: string;
-  muscleGroups: string[];
-  equipment: string;
-  difficulty: string;
-  duration: number;
-  caloriesBurned: number;
-  sets: number;
-  reps: string;
-  rating: number;
-  description: string;
-  instructions: string[];
-}
+import { fetchWorkouts, Workout } from "../../lib/api";
 
 export default function WorkoutDetails() {
   const params = useParams();
   const id = params.id as string;
-  const { addToPlan, addToSaved } = usePlan();
+  const { plan, addToPlan, addToSaved } = usePlan();
   const { showToast } = useToast();
 
-  const workout: Workout | undefined = workoutsData.find((item) => item.id.toString() === id);
+  const [workout, setWorkout] = useState<Workout | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
 
-  if (!workout) {
-    return <div className="text-white text-center py-20">Workout not found!</div>;
-  }
+  useEffect(() => {
+    fetchWorkouts()
+      .then((data) => {
+        const found = data.find((item) => item.id.toString() === id);
+        if (found) {
+          setWorkout(found);
+        } else {
+          setNotFound(true);
+        }
+      })
+      .catch(() => setNotFound(true))
+      .finally(() => setLoading(false));
+  }, [id]);
+
+  const isPlanFull = plan.length >= 5;
 
   const handleAddToPlan = () => {
+    if (isPlanFull || !workout) return;
     addToPlan(workout);
     showToast("Added to today's plan");
   };
 
   const handleAddToSaved = () => {
+    if (!workout) return;
     addToSaved(workout);
     showToast("Saved for later");
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#111111] flex flex-col items-center justify-center gap-4">
+        <div className="w-10 h-10 border-4 border-zinc-700 border-t-[#b6fd00] rounded-full animate-spin" />
+        <p className="text-zinc-400 text-sm">Loading workout…</p>
+      </div>
+    );
+  }
+
+  if (notFound || !workout) {
+    return <div className="text-white text-center py-20">Workout not found!</div>;
+  }
 
   return (
     <div className="min-h-screen bg-[#111111] text-white p-4 sm:p-6 md:p-12">
@@ -116,13 +130,19 @@ export default function WorkoutDetails() {
             <div className="flex flex-col sm:flex-row gap-3">
               <button
                 onClick={handleAddToPlan}
-                className="flex-1 bg-[#b6fd00] text-black font-bold text-[13px] py-3.5 px-6 rounded-full hover:opacity-90 transition flex items-center justify-center gap-2"
+                disabled={isPlanFull}
+                title={isPlanFull ? "Today's plan is full (max 5 lifts)" : ""}
+                className={`flex-1 font-bold text-[13px] py-3.5 px-6 rounded-full transition flex items-center justify-center gap-2 ${
+                  isPlanFull
+                    ? "bg-zinc-700 text-zinc-400 cursor-not-allowed"
+                    : "bg-[#b6fd00] text-black hover:opacity-90"
+                }`}
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
                   <rect x="3" y="4" width="18" height="18" rx="2" />
                   <path strokeLinecap="round" d="M16 2v4M8 2v4M3 10h18" />
                 </svg>
-                Add to today's plan
+                {isPlanFull ? "Plan is full" : "Add to today's plan"}
               </button>
               <button
                 onClick={handleAddToSaved}
