@@ -44,12 +44,12 @@ export default function WorkoutDetails() {
   };
 
   return (
-    <div className="min-h-screen bg-[#111111] text-white p-6 md:p-12">
+    <div className="min-h-screen bg-[#111111] text-white p-4 sm:p-6 md:p-12">
       <div className="max-w-6xl mx-auto">
         <p className="text-zinc-500 text-xs uppercase tracking-widest mb-6">Details Page</p>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-          <div className="w-full h-[400px] md:h-[500px] bg-zinc-900 rounded-2xl overflow-hidden border border-zinc-800">
+          <div className="w-full h-[280px] sm:h-[350px] md:h-[500px] bg-zinc-900 rounded-2xl overflow-hidden border border-zinc-800">
             <img src={workout.image} alt={workout.name} className="w-full h-full object-cover" />
           </div>
 
